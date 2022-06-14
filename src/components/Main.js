@@ -1,12 +1,25 @@
-import React, {useState} from "react"
+import React, {useState, useEffect} from "react"
 import DailySoup from "./DailySoup"
-import soup_logo from "./soup_logo.jpg"
-import data from "../data"
+import SoupAPI from "../api/SoupAPI"
+import SoupList from "./SoupList"
+import staticdata from "../data"
 
 export default function Main(){
-    const [mainSoup, setMainSoup] = useState(data.soups[0])
+  const [soups, setSoups] = useState([])
+  useEffect(() => {
+    const getSoups = async () => {
+      const data = await SoupAPI.fetchSoups()
+      if (data) {
+        setSoups(data.soups)
+      }
+    }
+
+    getSoups()
+  }, [])
+
+    const [mainSoup, setMainSoup] = useState(staticdata.soups[0])
     function getNewSoup() {
-        setMainSoup(data.soups[Math.floor(Math.random() * data.soups.length)])
+        setMainSoup(staticdata.soups[Math.floor(Math.random() * staticdata.soups.length)])
   }
   
   return(
@@ -17,6 +30,8 @@ export default function Main(){
             key={mainSoup.id}
             item={mainSoup}
             />
+        <SoupList soups={soups} />
+        
     </main>
   )
 }

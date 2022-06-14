@@ -1,5 +1,5 @@
 import React from "react"
-import soup_logo from "./soup_logo.jpg"
+
 
 export default function DailySoup(props){
   return(
